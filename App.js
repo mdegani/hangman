@@ -6,22 +6,63 @@ var hangman = (function () {
     //of the alphabet:
     var allLettersTracking = [];
     var targetWord = '';
-
+    var targetWordLetters = [];
+    var targetWordObject = [];
+    var latestGuess = '';
 
     return {
+        targetReveal: (
 
-        startGame:(function(){
-        console.log("game started script going, expect new word");
-        var targetWord = getWord();
-        console.log('Word for the game: ' + targetWord);
-        for (i = 0; i < allLetters.length; i++) {
-            allLettersTracking.push({
-                letter: allLetters[i],
-                selectedStatus: -1
-            });
-        };
-        //also, must reset the DOM elements here as part of startGame
-    })
+       function () {
+           var revealText = '';
+           for (var reveal in targetWordObject) {
+               if (targetWordObject[reveal].guessed == 1) {
+                   revealText += ' ' + targetWordObject[reveal].letter + ' ';
+               } else {
+                   revealText += " _ ";
+               }
+               document.getElementById("targetWordReveal").innerHTML = revealText;
+           }
+       }),
+
+        startGame: (function () {
+            //Build target word object:
+            var targetWord = getWord();
+            console.log('Target word: ' + targetWord);
+            targetWordLetters = targetWord.split("");
+            console.log(targetWordLetters);
+            for (var twl = 0; twl < targetWordLetters.length; twl++) {
+                targetWordObject.push(
+                {
+                    position: twl,
+                    letter: targetWordLetters[twl],
+                    guessed: -1
+                });
+            }
+            console.log(targetWordObject);
+
+            //Build alphabet object:
+            for (i = 0; i < allLetters.length; i++) {
+                allLettersTracking.push({
+                    letter: allLetters[i],
+                    selectedStatus: -1
+                });
+            };
+            hangman.targetReveal();
+
+        }),
+        guessLetter: (function () {
+            latestGuess = document.getElementById("guessInput").value;
+            //find the letter in targetWordLetters
+            if(targetWordLetters.indexOf(latestGuess)>-1){
+                console.log("Guessed a letter");
+                //update the targetWordObject, reveal letter
+            }else{
+                console.log("Incorrect guess");
+                //update the targetWordObject
+            }
+            //clear input, update score and alphabet info 
+        })
     }
 
 })();

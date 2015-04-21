@@ -6,10 +6,15 @@
         <title></title>
     </head>
     <body>
-        <h1>This is the title!</h1>
+        <h1>HANGMAN</h1>
       
+        <div><span id="targetWordReveal"></span>
+</div>
 
         <button onclick="hangman.startGame()">Reset Game!</button>
+                <button onclick="hangman.targetReveal()">Reveal</button>
+            <input type="text" id="guessInput"></input>
+<button onclick="hangman.guessLetter()" >Guess</button>
                 <script src="pickWord.js" type="text/javascript"></script>
         <script src="App.js" type="text/javascript"></script>
 
