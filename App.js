@@ -30,7 +30,8 @@ var hangman = (function () {
 
             document.getElementById("guessInputSubmit").disabled = false;
             document.getElementById("remainingLetters").innerHTML = 'Remaining letters: ' + allLetters;
-            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: (0)';
+            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: none so far.  May I suggest a vowel?  They are free.';
+            document.getElementById("gameScore").innerHTML = '';
 
             //Build target word object:
 
@@ -128,13 +129,28 @@ var hangman = (function () {
                 }
             }
 
+            //we need to know if all of the letters have been guessed
+            var allLettersGuessed = true; 
+            //assume true, we'll set it to false if there is at least one object
+            //where guessed == -1.  What we really want to do is filter the array
+            //to show only guessed and compare that to the legth of the array, but
+            //this should do for now.
+
+            for (i in targetWordObject){
+                if(targetWordObject[i].guessed == -1){
+                 allLettersGuessed = false;   
+                }
+            }
+
+            if (allLettersGuessed == true){
+                alert("you win!");
+            }
+
             //badLetters.length will determin hangman graphic and if the game need to end because of too many incorrect guesses
-
-
 
             // list remaining and bad letters:
             document.getElementById("remainingLetters").innerHTML = 'Remaining letters: ' + remainingLetters;
-            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: ' + badLetters + "(" + badLetters.length + ")";
+            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: ' + badLetters;
 
             var gameStatus = {
 
@@ -145,11 +161,11 @@ var hangman = (function () {
                 //game over.  need to stop input (deactivate button), reset variables and dom elements and offer an option to start a
                 //new game.
                 document.getElementById("gameScore").innerHTML = 'Game over!  The word was <strong>' + targetWord + '</strong>.';
-                /*var allLettersTracking = [];
-                var targetWord = '';
-                var targetWordLetters = [];
-                var targetWordObject = [];
-                var latestGuess = '';*/
+                allLettersTracking = [];
+                targetWord = '';
+                targetWordLetters = [];
+                targetWordObject = [];
+                latestGuess = '';
 
                 document.getElementById("guessInputSubmit").disabled = true;
 
