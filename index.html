@@ -11,6 +11,9 @@
         <div id="targetWordReveal">
 </div>
 
+        <div id="remainingLetters"></div>
+                <div id="badLetters"></div>
+
         <button onclick="hangman.startGame()">Start New Game</button>
             <input type="text" id="guessInput" onkeydown="if (event.keyCode == 13) document.getElementById('guessInputSubmit').click()"></input>
 <button id="guessInputSubmit" onclick="hangman.guessLetter()" >Guess</button>

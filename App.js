@@ -2,7 +2,7 @@
 
 var hangman = (function () {
 
-    var allLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "w", "x", "y", "z"];
+    var allLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v","w", "x", "y", "z"];
     //this array will track the status of all of the letter
     //of the alphabet:
     var allLettersTracking = [];
@@ -104,7 +104,7 @@ var hangman = (function () {
 
             }
             //clear input, update score and alphabet info
-
+            hangman.updateScore();
 
             //allLettersTracking.selectedStatus
 
@@ -113,14 +113,32 @@ var hangman = (function () {
 
         }),
 
-        updateScore:({
-            //create a list of all of the remaining letters of the alphabet
+        updateScore: (function () {
+            //create a list of all of the remaining letters of the alphabet and all of the bad guesses:
+            var remainingLetters = [];
+            var badLetters = [];
 
-            //create a list of all of the inocorrectly guessed letters of the aphabet
+            for (i in allLettersTracking) {
 
-            //Count the number of incorrectly guessed letters (to determine the hangman graphic)
-            
-            //show both lists
+                if (allLettersTracking[i].selectedStatus == -1) {
+                    remainingLetters.push(allLettersTracking[i].letter);
+                } else if (allLettersTracking[i].selectedStatus == 2) {
+                    console.log("Bad letter:" + allLettersTracking[i].letter)
+                    badLetters.push(allLettersTracking[i].letter);
+
+                }
+            }
+
+            //badLetters.length will determin hangman graphic and if the game need to end because of too many incorrect guesses
+
+
+
+            // list remaining and bad letters:
+            document.getElementById("remainingLetters").innerHTML = 'Remaining letters: ' + remainingLetters;
+            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: ' + badLetters + "("+ badLetters.length + ")";
+
+
+
             
         })
     }
