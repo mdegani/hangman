@@ -2,7 +2,7 @@
 
 var hangman = (function () {
 
-    var allLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v","w", "x", "y", "z"];
+    var allLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
     //this array will track the status of all of the letter
     //of the alphabet:
     var allLettersTracking = [];
@@ -28,11 +28,16 @@ var hangman = (function () {
 
         startGame: (function () {
 
+            document.getElementById("guessInputSubmit").disabled = false;
+            document.getElementById("remainingLetters").innerHTML = 'Remaining letters: ' + allLetters;
+            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: (0)';
+
             //Build target word object:
-            var targetWord = getWord();
+
+            //removed var keyword.  it was rescoped the variable, causing bug
+            targetWord = getWord();
             console.log('Target word: ' + targetWord);
             targetWordLetters = targetWord.split("");
-            console.log(targetWordLetters);
             targetWordObject = [];
             for (var twl = 0; twl < targetWordLetters.length; twl++) {
                 targetWordObject.push(
@@ -42,7 +47,6 @@ var hangman = (function () {
                     guessed: -1
                 });
             }
-            console.log(targetWordObject);
             //Build alphabet object:
             allLettersTracking = [];
             for (i = 0; i < allLetters.length; i++) {
@@ -56,10 +60,10 @@ var hangman = (function () {
 
         }),
         guessLetter: (function () {
+
             latestGuess = document.getElementById("guessInput").value.toLowerCase();
             //find the letter in targetWordLetters
             if (targetWordLetters.indexOf(latestGuess) > -1) {
-                console.log("Guessed a letter");
 
                 //update the targetWordObject, reveal letter:
                 function isMatch(letter) {
@@ -82,12 +86,9 @@ var hangman = (function () {
                     filteredTargetLetterTracking[w].selectedStatus = 1;
                 }
 
-                console.log(allLettersTracking);
-
                 hangman.targetReveal();
 
             } else {
-                console.log("Incorrect guess");
                 //update the targetWordObject
                 //update allLettersTracking so we know which letters are used.
 
@@ -100,7 +101,6 @@ var hangman = (function () {
                 for (w in filteredTargetLetterTracking) {
                     filteredTargetLetterTracking[w].selectedStatus = 2;
                 }
-                console.log(allLettersTracking);
 
             }
             //clear input, update score and alphabet info
@@ -123,7 +123,6 @@ var hangman = (function () {
                 if (allLettersTracking[i].selectedStatus == -1) {
                     remainingLetters.push(allLettersTracking[i].letter);
                 } else if (allLettersTracking[i].selectedStatus == 2) {
-                    console.log("Bad letter:" + allLettersTracking[i].letter)
                     badLetters.push(allLettersTracking[i].letter);
 
                 }
@@ -135,11 +134,32 @@ var hangman = (function () {
 
             // list remaining and bad letters:
             document.getElementById("remainingLetters").innerHTML = 'Remaining letters: ' + remainingLetters;
-            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: ' + badLetters + "("+ badLetters.length + ")";
+            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: ' + badLetters + "(" + badLetters.length + ")";
+
+            var gameStatus = {
+
+                lettersWrong: badLetters.length,
+                gameOver: (badLetters.length > 7 ? true : false)
+            };
+            if (gameStatus.gameOver) {
+                //game over.  need to stop input (deactivate button), reset variables and dom elements and offer an option to start a
+                //new game.
+                document.getElementById("gameScore").innerHTML = 'Game over!  The word was <strong>' + targetWord + '</strong>.';
+                /*var allLettersTracking = [];
+                var targetWord = '';
+                var targetWordLetters = [];
+                var targetWordObject = [];
+                var latestGuess = '';*/
+
+                document.getElementById("guessInputSubmit").disabled = true;
+
+            }
+            else {
+                var hangmanGraphic = '(' + gameStatus.lettersWrong + '/7) ' + Array(gameStatus.lettersWrong + 1).join("*") + Array(7 - gameStatus.lettersWrong + 1).join("-")  //temporary use simple text "progress bar" (may use case statement later)
+                document.getElementById("gameScore").innerHTML = hangmanGraphic;
+            }
 
 
-
-            
         })
     }
 
