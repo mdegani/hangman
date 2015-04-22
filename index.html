@@ -8,13 +8,12 @@
     <body>
         <h1>HANGMAN</h1>
       
-        <div><span id="targetWordReveal"></span>
+        <div id="targetWordReveal">
 </div>
 
-        <button onclick="hangman.startGame()">Reset Game!</button>
-                <button onclick="hangman.targetReveal()">Reveal</button>
-            <input type="text" id="guessInput"></input>
-<button onclick="hangman.guessLetter()" >Guess</button>
+        <button onclick="hangman.startGame()">Start New Game</button>
+            <input type="text" id="guessInput" onkeydown="if (event.keyCode == 13) document.getElementById('guessInputSubmit').click()"></input>
+<button id="guessInputSubmit" onclick="hangman.guessLetter()" >Guess</button>
                 <script src="pickWord.js" type="text/javascript"></script>
         <script src="App.js" type="text/javascript"></script>
 
