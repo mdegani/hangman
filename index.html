@@ -6,20 +6,31 @@
         <title></title>
     </head>
     <body>
-        <h1>HANGMAN</h1>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+
+        <h1>Word guessing game</h1>
       
         <div id="targetWordReveal">
 </div>
 
         <div id="remainingLetters"></div>
                 <div id="badLetters"></div>
+        <div id="hangedGuy"></div>
                         <div id="gameScore"></div>
+
+        <!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
         <button onclick="hangman.startGame()" id="btnNewGame">Start New Game</button>
             <input type="text" id="guessInput" onkeydown="if (event.keyCode == 13) document.getElementById('guessInputSubmit').click()"></input>
 <button id="guessInputSubmit" onclick="hangman.guessLetter()" >Guess</button>
-                <script src="pickWord.js" type="text/javascript"></script>
+                <script src="pickWord.js" type="text/javascript"></script>s
         <script src="App.js" type="text/javascript"></script>
+
+
 
     </body>
 </html>
