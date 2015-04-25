@@ -10,26 +10,79 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 
+<div class="container">
 
-        <h1>Word guessing game</h1>
+
+
+    <div class="page-header">
+  <h1>guess</h1>
+        <h1 style="color:#9392b4"><small>just type a letter into the yellow box</small></h1>
+        
+</div>
+    <div class="jumbotron">
+
+        <div class="row">
+            <div class="col-md-2 col-md-offset-10">
+                <button onclick="hangman.startGame()" id="btnNewGame" class="btn btn-default btn-block"><span class="glyphicon glyphicon-repeat"></span></button>
+    </div>
+            </div>
+        <br>
+
+    <div class="panel panel-default">
+  <div class="panel-body">
+
       
-        <div id="targetWordReveal">
+        <p id="targetWordReveal" class="lead">
+</p>
+  </div>
+</div>
+      
+        <div class="progress">
+  <div id="progressBar" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+
+  </div>
 </div>
 
-        <div id="remainingLetters"></div>
-                <div id="badLetters"></div>
-        <div id="hangedGuy"></div>
-                        <div id="gameScore"></div>
+
+                <div id="playControls">
+                    <div class="row">
+
+
+
+
+                        <div class="col-md-10">
+            <input placeholder="guess one letter" style="background-color: #f9ea96" class="form-control input-md"  type="text" id="guessInput" onkeydown="if (event.keyCode == 13) document.getElementById('guessInputSubmit').click()" oninput="readyToInput()"></input>
+</div>
+                                                <div class="col-md-2">
+
+<button id="guessInputSubmit" onclick="hangman.guessLetter()" class="btn btn-default btn-block">
+<span class="glyphicon glyphicon-send"></span>
+</button>
+                                                    </div>
+                        </div>
+            </div>
+        <br>
+
+        <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><span class="glyphicon glyphicon-thumbs-down"></span></h3>
+  </div>
+  <div class="panel-body">
+             <div id="badLetters"></div>
+  </div>
 
         <!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <!-- <script src="https://maxcd9
+        n.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
 
-        <button onclick="hangman.startGame()" id="btnNewGame">Start New Game</button>
-            <input type="text" id="guessInput" onkeydown="if (event.keyCode == 13) document.getElementById('guessInputSubmit').click()"></input>
-<button id="guessInputSubmit" onclick="hangman.guessLetter()" >Guess</button>
-                <script src="pickWord.js" type="text/javascript"></script>s
+
+
+            <script src="pickWord.js" type="text/javascript"></script>
         <script src="App.js" type="text/javascript"></script>
 
+
+    
+</div>
 
 
     </body>

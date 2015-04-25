@@ -27,11 +27,14 @@ var hangman = (function () {
        }),
 
         startGame: (function () {
+            document.getElementById("btnNewGame").className = "btn btn-default btn-block";
 
-            document.getElementById("guessInputSubmit").disabled = false;
-            document.getElementById("remainingLetters").innerHTML = 'Remaining letters: ' + allLetters;
-            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: none so far.  May I suggest a vowel?  They are free.';
-            document.getElementById("gameScore").innerHTML = '';
+            document.getElementById("playControls").style.visibility = "visible";
+            document.getElementById("progressBar").style.width = 0 + '%';
+
+            //document.getElementById("remainingLetters").innerHTML = allLetters;
+            document.getElementById("guessInput").placeholder = 'Type a letter: ' + allLetters;
+            document.getElementById("badLetters").innerHTML = 'May I suggest a vowel?  They are free.';
 
             //Build target word object:
 
@@ -61,6 +64,7 @@ var hangman = (function () {
 
         }),
         guessLetter: (function () {
+            document.getElementById("guessInputSubmit").className = "btn btn-default btn-block";
 
             latestGuess = document.getElementById("guessInput").value.toLowerCase();
             //find the letter in targetWordLetters
@@ -136,6 +140,12 @@ var hangman = (function () {
             //to show only guessed and compare that to the legth of the array, but
             //this should do for now.
 
+            var gameStatus = {
+
+                lettersWrong: badLetters.length,
+                gameOver: (badLetters.length > 9 ? true : false)
+            };
+
             for (i in targetWordObject) {
                 if (targetWordObject[i].guessed == -1) {
                     allLettersGuessed = false;
@@ -144,35 +154,40 @@ var hangman = (function () {
 
             if (allLettersGuessed == true) {
                 alert("you win!");
+                gameStatus.gameOver = true;
             }
 
             //badLetters.length will determin hangman graphic and if the game need to end because of too many incorrect guesses
 
             // list remaining and bad letters:
-            document.getElementById("remainingLetters").innerHTML = 'Remaining letters: ' + remainingLetters;
-            document.getElementById("badLetters").innerHTML = 'Incorrect guesses: ' + badLetters;
+            //document.getElementById("remainingLetters").innerHTML = 'Remaining letters: ' + remainingLetters;
+            document.getElementById("guessInput").placeholder = 'Type a letter: ' + remainingLetters;
 
-            var gameStatus = {
+            document.getElementById("badLetters").innerHTML = badLetters;
 
-                lettersWrong: badLetters.length,
-                gameOver: (badLetters.length > 9 ? true : false)
-            };
+
             if (gameStatus.gameOver) {
                 //game over.  need to stop input (deactivate button), reset variables and dom elements and offer an option to start a
                 //new game.
-                document.getElementById("gameScore").innerHTML = 'Game over!  The word was <strong>' + targetWord + '</strong>.';
+                //btnNewGame should be green
+                alert('Game over!  The word was' + targetWord);
                 allLettersTracking = [];
                 targetWord = '';
                 targetWordLetters = [];
                 targetWordObject = [];
                 latestGuess = '';
+                document.getElementById("progressBar").style.width = 0 + '%';
 
-                document.getElementById("guessInputSubmit").disabled = true;
+
+                document.getElementById("playControls").style.visibility = "hidden";
+                document.getElementById("btnNewGame").className = "btn btn-success btn-block";
+
 
             }
             else {
-                var hangmanGraphic = '(' + gameStatus.lettersWrong + '/9) ' + Array(gameStatus.lettersWrong + 1).join("*") + Array(9 - gameStatus.lettersWrong + 1).join("-")  //temporary use simple text "progress bar" (may use case statement later)
-                document.getElementById("gameScore").innerHTML = hangmanGraphic;
+
+                document.getElementById("progressBar").style.width = Math.floor(gameStatus.lettersWrong / 9 * 100) + '%';
+
             }
 
 
@@ -180,6 +195,13 @@ var hangman = (function () {
     }
 
 })();
+
+function readyToInput(){
+
+        document.getElementById("guessInputSubmit").className = "btn btn-success btn-block";
+
+    
+}
 
 
 //initiate first game:
