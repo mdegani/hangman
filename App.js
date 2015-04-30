@@ -1,3 +1,10 @@
+/*
+$(document).ready(function () {
+    $.get("http://wordguessservice.azure-mobile.net/api/random/", function (data, status) {
+        alert("Data: " + data[0].word + "\nStatus: " + status);
+    });
+});
+*/
 
 
 var hangman = (function () {
@@ -39,18 +46,34 @@ var hangman = (function () {
             //Build target word object:
 
             //removed var keyword.  it was rescoped the variable, causing bug
-            targetWord = getWord();
-            console.log('Target word: ' + targetWord);
-            targetWordLetters = targetWord.split("");
-            targetWordObject = [];
-            for (var twl = 0; twl < targetWordLetters.length; twl++) {
-                targetWordObject.push(
-                {
-                    position: twl,
-                    letter: targetWordLetters[twl],
-                    guessed: -1
+
+
+            //targetWord = getWord();
+            // relplace the "getWord(); function, which drew data from a file with an ajax call
+
+            $(document).ready(
+            function () {
+                $.get("http://wordguessservice.azure-mobile.net/api/random/", function (data, status) {
+                    targetWord = data[0].word;
+                    console.log('Target word: ' + targetWord);
+                    targetWordLetters = targetWord.split("");
+
+                    targetWordObject = [];
+                    for (var twl = 0; twl < targetWordLetters.length; twl++) {
+                        targetWordObject.push(
+                            {
+                                position: twl,
+                                letter: targetWordLetters[twl],
+                                guessed: -1
+                            });
+                    }
                 });
-            }
+            });
+
+
+
+
+
             //Build alphabet object:
             allLettersTracking = [];
             for (i = 0; i < allLetters.length; i++) {
