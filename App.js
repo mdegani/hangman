@@ -12,21 +12,24 @@ $(document).ready(function () {
         var latestGuess = '';
 
         return {
-            targetReveal: (
-       function () {
-           var revealText = ''
-           t = '';
-           for (var reveal in targetWordObject) {
-               if (targetWordObject[reveal].guessed == 1) {
-                   revealText += ' ' + targetWordObject[reveal].letter + ' ';
-               } else {
-                   revealText += " _ ";
-               }
-               $('#targetWordReveal').html(revealText);
-           }
-       }),
-
+            targetReveal: (function () {
+                var revealText = ''
+                t = '';
+                for (var reveal in targetWordObject) {
+                    if (targetWordObject[reveal].guessed == 1) {
+                        revealText += ' ' + targetWordObject[reveal].letter + ' ';
+                    } else {
+                        revealText += " _ ";
+                    }
+                    $('#targetWordReveal').html(revealText);
+                }
+            }),
             startGame: (function () {
+                                $("#pleaseWait").hide();
+
+                $("#pleaseWait").fadeIn('slow');
+
+
                 $.get("http://wordguessservice.azure-mobile.net/api/random/", function (data, status) {
 
                     $('#btnNewGame').attr('class', "btn btn-default btn-block");
@@ -67,11 +70,14 @@ $(document).ready(function () {
 
                     hangman.targetReveal();
                     hangman.updateScore();
+                    $("#pleaseWait").hide();
+
 
                 });
 
             }),
             guessLetter: (function (latestGuess) {
+
                 $('#guessInputSubmit').attr('class', 'btn btn-default btn-block');
                 //find the letter in targetWordLetters
                 if (targetWordLetters.indexOf(latestGuess) > -1) {
@@ -120,7 +126,6 @@ $(document).ready(function () {
                 $('#guessInput').val('').focus();
 
             }),
-
             updateScore: (function () {
                 //create a list of all of the remaining letters of the alphabet and all of the bad guesses:
                 var remainingLetters = [];
