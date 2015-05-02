@@ -14,7 +14,8 @@ $(document).ready(function () {
         return {
             targetReveal: (
        function () {
-           var revealText = '';
+           var revealText = ''
+           t = '';
            for (var reveal in targetWordObject) {
                if (targetWordObject[reveal].guessed == 1) {
                    revealText += ' ' + targetWordObject[reveal].letter + ' ';
@@ -26,16 +27,16 @@ $(document).ready(function () {
        }),
 
             startGame: (function () {
-
-                $('#btnNewGame').attr('class', "btn btn-default btn-block");
-                $("#playControls").show();
-                $("#progressBar").css('width', 0 + '%');
-                $("#guessInput").attr('placeholder', 'Type a letter: ' + allLetters);
-                $("#badLetters").html('May I suggest a vowel?  They are free here.');
-
-                //Build target word object
-
                 $.get("http://wordguessservice.azure-mobile.net/api/random/", function (data, status) {
+
+                    $('#btnNewGame').attr('class', "btn btn-default btn-block");
+                    $("#playControls").show();
+                    $("#progressBar").css('width', 0 + '%');
+                    $("#guessInput").attr('placeholder', 'Type a letter: ' + allLetters);
+                    $("#badLetters").html('May I suggest a vowel?  They are free.');
+
+                    //Build target word object
+
                     targetWord = data[0].word;
                     console.log('Target word: ' + targetWord);
                     targetWordLetters = targetWord.split("");
@@ -49,18 +50,26 @@ $(document).ready(function () {
                                 guessed: -1
                             });
                     }
-                });
 
-                //Build alphabet object:
-                allLettersTracking = [];
-                for (i = 0; i < allLetters.length; i++) {
-                    allLettersTracking.push({
-                        letter: allLetters[i],
-                        selectedStatus: -1
-                        //-1 = not selected, 1 = selected and correct, 2 = selected and incorrect
-                    });
-                };
-                hangman.targetReveal();
+
+
+
+
+                    //Build alphabet object:
+                    allLettersTracking = [];
+                    for (i = 0; i < allLetters.length; i++) {
+                        allLettersTracking.push({
+                            letter: allLetters[i],
+                            selectedStatus: -1
+                            //-1 = not selected, 1 = selected and correct, 2 = selected and incorrect
+                        });
+                    };
+
+                    hangman.targetReveal();
+                                                                               hangman.updateScore();
+
+
+                });
 
             }),
             guessLetter: (function () {
@@ -162,15 +171,18 @@ $(document).ready(function () {
                     //game over.  need to stop input (deactivate button), reset variables and dom elements and offer an option to start a
                     //new game.
                     //btnNewGame should be green
-                    alert('Game over!  The word was' + targetWord);
+                    alert('Game over!  The word was ' + targetWord);
                     allLettersTracking = [];
                     targetWord = '';
                     targetWordLetters = [];
                     targetWordObject = [];
                     latestGuess = '';
-                    $("#progressBar").css('width', 0 + '%')
+                    $("#progressBar").css('width', 0 + '%');
                     $("#playControls").hide();
                     $('#btnNewGame').attr('class', "btn btn-success btn-block");
+                    if ($("#badLetters").html() == '') {
+                        $("#badLetters").html('Perfect game!');
+                    };
 
                 }
                 else {
@@ -178,7 +190,6 @@ $(document).ready(function () {
                     $("#progressBar").css('width', Math.floor(gameStatus.lettersWrong / 9 * 100) + '%')
 
                 }
-
 
             })
         }
@@ -203,4 +214,3 @@ $(document).ready(function () {
     });
 
 });
-
