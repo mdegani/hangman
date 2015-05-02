@@ -6,15 +6,12 @@ $(document).ready(function () {
         //this array will track the status of all of the letter
         //of the alphabet:
         var allLettersTracking = [];
-        var targetWord = '';
-        var targetWordLetters = [];
         var targetWordObject = [];
         var latestGuess = '';
 
         return {
             targetReveal: (function () {
                 var revealText = ''
-                t = '';
                 for (var reveal in targetWordObject) {
                     if (targetWordObject[reveal].guessed == 1) {
                         revealText += ' ' + targetWordObject[reveal].letter + ' ';
@@ -39,21 +36,18 @@ $(document).ready(function () {
 
                     //Build target word object
 
-                    targetWord = data[0].word;
-                    console.log('Target word: ' + targetWord);
-                    targetWordLetters = targetWord.split("");
+                    console.log('Target word: ' + data[0].word);
 
                     targetWordObject = [];
-                    for (var twl = 0; twl < targetWordLetters.length; twl++) {
+
+                    for (var twl = 0; twl < data[0].word.split("").length; twl++) {
                         targetWordObject.push(
                             {
                                 position: twl,
-                                letter: targetWordLetters[twl],
+                                letter: data[0].word.split("")[twl],
                                 guessed: -1
                             });
                     }
-
-
 
 
 
