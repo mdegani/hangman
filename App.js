@@ -66,15 +66,13 @@ $(document).ready(function () {
                     };
 
                     hangman.targetReveal();
-                                                                               hangman.updateScore();
-
+                    hangman.updateScore();
 
                 });
 
             }),
-            guessLetter: (function () {
+            guessLetter: (function (latestGuess) {
                 $('#guessInputSubmit').attr('class', 'btn btn-default btn-block');
-                latestGuess = $('#guessInput').val().toLowerCase();
                 //find the letter in targetWordLetters
                 if (targetWordLetters.indexOf(latestGuess) > -1) {
 
@@ -206,7 +204,7 @@ $(document).ready(function () {
     });
 
     $("#guessInputSubmit").click(function () {
-        hangman.guessLetter();
+        hangman.guessLetter($('#guessInput').val().toLowerCase());
     });
 
     $("#btnNewGame").click(function () {
