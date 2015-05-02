@@ -25,10 +25,9 @@ $(document).ready(function () {
                 }
             }),
             startGame: (function () {
-                                $("#pleaseWait").hide();
+                $("#pleaseWait").hide();
 
                 $("#pleaseWait").fadeIn('slow');
-
 
                 $.get("http://wordguessservice.azure-mobile.net/api/random/", function (data, status) {
 
@@ -82,26 +81,18 @@ $(document).ready(function () {
                 //find the letter in targetWordLetters
                 if (targetWordLetters.indexOf(latestGuess) > -1) {
 
-                    //update the targetWordObject, reveal letter:
-                    function isMatch(letter) {
-                        return letter.letter == latestGuess;
-                    }
-                    var filteredTargetWordObject = targetWordObject.filter(isMatch);
 
-                    var x;
-                    for (x in filteredTargetWordObject) {
-                        filteredTargetWordObject[x].guessed = 1;
-                    }
+                    $.each(targetWordObject, function (index, value) {
+                        if (value.letter == latestGuess) {
+                            value.guessed = 1;
+                        }
+                    });
 
-                    //update allLettersTracking so we know which letters are used.
-                    function isMatchLetter(letter) {
-                        return letter.letter == latestGuess;
-                    }
-                    var filteredTargetLetterTracking = allLettersTracking.filter(isMatchLetter);
-                    var w;
-                    for (w in filteredTargetLetterTracking) {
-                        filteredTargetLetterTracking[w].selectedStatus = 1;
-                    }
+                    $.each(allLettersTracking, function (index, value) {
+                        if (value.letter == latestGuess) {
+                            value.selectedStatus = 1;
+                        }
+                    });
 
                     hangman.targetReveal();
 
@@ -109,15 +100,11 @@ $(document).ready(function () {
                     //update the targetWordObject
                     //update allLettersTracking so we know which letters are used.
 
-                    //todo: these functions are repeated should be refactored
-                    function isMatchLetterIncorrect(letter) {
-                        return letter.letter == latestGuess;
-                    }
-                    var filteredTargetLetterTracking = allLettersTracking.filter(isMatchLetterIncorrect);
-                    var w;
-                    for (w in filteredTargetLetterTracking) {
-                        filteredTargetLetterTracking[w].selectedStatus = 2;
-                    }
+                    $.each(allLettersTracking, function (index, value) {
+                        if (value.letter == latestGuess) {
+                            value.selectedStatus = 2;
+                        }
+                    });
 
                 }
                 //clear input, update score and alphabet info
