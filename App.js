@@ -8,6 +8,7 @@ $(document).ready(function () {
         var allLettersTracking = [];
         var targetWordObject = [];
         var latestGuess = '';
+        var targetWord = ''; //we need this for dialog and stuff
 
         return {
             targetReveal: (function () {
@@ -22,8 +23,8 @@ $(document).ready(function () {
                 }
             }),
             startGame: (function () {
+                $('#myModal').modal({ show: false })
                 $("#pleaseWait").hide();
-
                 $("#pleaseWait").fadeIn('slow');
 
                 $.get("http://wordguessservice.azure-mobile.net/api/random/", function (data, status) {
@@ -35,6 +36,8 @@ $(document).ready(function () {
                     $("#badLetters").html('May I suggest a vowel?  They are free.');
 
                     //Build target word object
+
+                    targetWord = data[0].word;
 
                     console.log('Target word: ' + data[0].word);
 
@@ -72,8 +75,8 @@ $(document).ready(function () {
             guessLetter: (function (latestGuess) {
 
                 $('#guessInputSubmit').attr('class', 'btn btn-default btn-block');
-                //find the letter in targetWordLetters
-                if (targetWordLetters.indexOf(latestGuess) > -1) {
+
+                if (targetWord.split("").indexOf(latestGuess) > -1) {
 
 
                     $.each(targetWordObject, function (index, value) {
@@ -131,7 +134,9 @@ $(document).ready(function () {
                 var gameStatus = {
 
                     lettersWrong: badLetters.length,
-                    gameOver: (badLetters.length > 9 ? true : false)
+                    gameOver: (badLetters.length > 9 ? true : false),
+                    //nice nested if statement a la excel vlookup:
+                    message: (badLetters.length > 9 ? 'You lost. ' : (badLetters.length == 0 ? 'Perfect game! ' : 'You win! ' + badLetters.length + ' wrong guesses.'))
                 };
 
                 for (i in targetWordObject) {
@@ -141,11 +146,8 @@ $(document).ready(function () {
                 }
 
                 if (allLettersGuessed == true) {
-                    alert("you win!");
                     gameStatus.gameOver = true;
                 }
-
-                //badLetters.length will determin hangman graphic and if the game need to end because of too many incorrect guesses
 
                 // list remaining and bad letters:
                 $("#guessInput").attr('placeholder', 'Type a letter: ' + remainingLetters);
@@ -155,24 +157,22 @@ $(document).ready(function () {
                     //game over.  need to stop input (deactivate button), reset variables and dom elements and offer an option to start a
                     //new game.
                     //btnNewGame should be green
-                    alert('Game over!  The word was ' + targetWord);
+                    $("#gameOverModal").html(gameStatus.message + ' The word was <em>' + targetWord + '</em>');
+                    $('#myModal').modal('show');
                     allLettersTracking = [];
                     targetWord = '';
-                    targetWordLetters = [];
                     targetWordObject = [];
                     latestGuess = '';
                     $("#progressBar").css('width', 0 + '%');
                     $("#playControls").hide();
                     $('#btnNewGame').attr('class', "btn btn-success btn-block");
                     if ($("#badLetters").html() == '') {
-                        $("#badLetters").html('Perfect game!');
+                        $("#badLetters").html(gameStatus.message);
                     };
 
                 }
                 else {
-
-                    $("#progressBar").css('width', Math.floor(gameStatus.lettersWrong / 9 * 100) + '%')
-
+                    $("#progressBar").css('width', Math.floor(gameStatus.lettersWrong / 9 * 100) + '%');
                 }
 
             })
