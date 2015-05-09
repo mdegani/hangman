@@ -151,6 +151,9 @@ $(document).ready(function () {
 
                 // list remaining and bad letters:
                 $("#guessInput").attr('placeholder', 'Type a letter: ' + remainingLetters);
+
+                    $('#IElabel').html('<lable> Type a letter: ' + remainingLetters + '</label>');
+                
                 $('#badLetters').html(badLetters);
 
                 if (gameStatus.gameOver) {
