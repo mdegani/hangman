@@ -10,8 +10,7 @@ $(document).ready(function () {
         var latestGuess = '';
         var targetWord = ''; //we need this for dialog and stuff
 
-        return {
-            targetReveal: (function () {
+        var targetReveal = function () {
                 var revealText = ''
                 for (var reveal in targetWordObject) {
                     if (targetWordObject[reveal].guessed == 1) {
@@ -21,8 +20,8 @@ $(document).ready(function () {
                     }
                     $('#targetWordReveal').html(revealText);
                 }
-            }),
-            startGame: (function () {
+            };
+        var startGame = function () {
                 $('#myModal').modal({ show: false })
                 $("#pleaseWait").hide();
                 $("#pleaseWait").fadeIn('slow');
@@ -71,8 +70,8 @@ $(document).ready(function () {
 
                 });
 
-            }),
-            guessLetter: (function (latestGuess) {
+            };
+        var guessLetter = function (latestGuess) {
 
                 $('#guessInputSubmit').attr('class', 'btn btn-default btn-block');
 
@@ -109,8 +108,8 @@ $(document).ready(function () {
 
                 $('#guessInput').val('').focus();
 
-            }),
-            updateScore: (function () {
+            };
+        var updateScore = function () {
                 //create a list of all of the remaining letters of the alphabet and all of the bad guesses:
                 var remainingLetters = [];
                 var badLetters = [];
@@ -178,7 +177,13 @@ $(document).ready(function () {
                     $("#progressBar").css('width', Math.floor(gameStatus.lettersWrong / 9 * 100) + '%');
                 }
 
-            })
+            };
+
+        return {
+            targetReveal: targetReveal,
+            startGame: startGame,
+            guessLetter: guessLetter,
+            updateScore: updateScore
         }
 
     })();
