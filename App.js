@@ -1,3 +1,4 @@
+(function(){
 $(document).ready(function () {
 
     var hangman = (function () {
@@ -206,3 +207,5 @@ $(document).ready(function () {
     });
 
 });
+
+}())
